@@ -48,7 +48,7 @@ export function createSeedData(): AppState {
         code: 'CHEM 110',
         color: '#10b981',
         effortMultiplier: 1.2,
-        meetingTimes: 'MWF 3:35–4:25, R rec 1:35–2:50',
+        meetingTimes: 'MWF 15:35–16:25, R rec 13:35–14:50',
         categories: [
           { id: 'chem-mt', name: 'Midterm Exams', weightPct: 40.5, expectedCount: 3 },
           { id: 'chem-case', name: 'Case Study', weightPct: 13.5, expectedCount: 1 },
@@ -79,7 +79,7 @@ export function createSeedData(): AppState {
         code: 'LDT 110N',
         color: '#8b5cf6',
         effortMultiplier: 0.8,
-        meetingTimes: 'T 12:05–1:20 + online',
+        meetingTimes: 'T 12:05–13:20 + online',
         categories: [
           { id: 'ldt-disc', name: 'Online Discussions', weightPct: 22.5, expectedCount: 14 },
           { id: 'ldt-part', name: 'In-person Participation', weightPct: 19.5, expectedCount: 15, dropLowest: 2 },
@@ -92,7 +92,7 @@ export function createSeedData(): AppState {
         code: 'PHYS 211',
         color: '#3b82f6',
         effortMultiplier: 1.3,
-        meetingTimes: 'MW 11:15–12:05, M lab 6:50–8:45, W rec 7:55–8:45',
+        meetingTimes: 'MW 11:15–12:05, M lab 18:50–20:45, W rec 19:55–20:45',
         categories: [
           { id: 'phys-mt', name: 'Midterm Exams', weightPct: 45, expectedCount: 3 },
           { id: 'phys-final', name: 'Final Exam', weightPct: 20, expectedCount: 1 },

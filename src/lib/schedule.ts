@@ -158,9 +158,9 @@ export function buildDaySchedule(
       roundIdx++;
       const budgetLeft = tb.dailyBudgetMin - tb.usedMin;
       if (budgetLeft <= 0) { stuckCount++; continue; }
-      stuckCount = 0;
       const blockMin = Math.min(budgetLeft, MAX_WORK_BLOCK_MIN, remaining);
-      if (blockMin < 15) continue;
+      if (blockMin < 15) { stuckCount++; continue; }
+      stuckCount = 0;
       const effortLeft = Math.round(tb.sa.effort * 60) - tb.usedMin;
       const actualBlock = Math.min(blockMin, effortLeft);
       if (actualBlock < 15) { tb.usedMin = tb.dailyBudgetMin; continue; }
