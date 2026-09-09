@@ -8,6 +8,7 @@ function a(
   type: AssignmentType,
   dueAt: string,
   pointsPossible?: number,
+  status: Status = 'notStarted',
 ): Assignment {
   return {
     id,
@@ -16,7 +17,7 @@ function a(
     title,
     type,
     dueAt,
-    status: 'notStarted' as Status,
+    status,
     source: 'manual',
     ...(pointsPossible != null ? { pointsPossible } : {}),
   };
@@ -171,10 +172,11 @@ export function createSeedData(): AppState {
       a('l110-a4a', 'ldt110n', 'ldt-assign', 'Assignment 4a: Lesson Plan', 'essay', '2026-12-01T23:59:00', 20),
       a('l110-a4b', 'ldt110n', 'ldt-assign', 'Assignment 4b: Teaching', 'other', '2026-12-08T23:59:00', 8),
 
-      // ====== PHYS 211 — Post-Class Homework (Expert TA) ======
-      a('p211-hw01', 'phys211', 'phys-hw', 'HW 01', 'problemSet', '2026-08-27T23:59:00', 100),
-      a('p211-hw02', 'phys211', 'phys-hw', 'HW 02', 'problemSet', '2026-09-03T23:59:00', 100),
-      a('p211-hw03', 'phys211', 'phys-hw', 'HW 03', 'problemSet', '2026-09-10T23:59:00', 100),
+      // ====== PHYS 211 — Expert TA: Getting Started + Post-Class Homework ======
+      a('p211-start', 'phys211', 'phys-hw', 'Getting Started with Expert TA', 'other', '2026-08-26T23:59:00', 100, 'done'),
+      a('p211-hw01', 'phys211', 'phys-hw', 'HW01: Mathematics and Units', 'problemSet', '2026-08-27T23:59:00', 100, 'done'),
+      a('p211-hw02', 'phys211', 'phys-hw', 'HW02: 1D Motion', 'problemSet', '2026-09-03T23:59:00', 100, 'done'),
+      a('p211-hw03', 'phys211', 'phys-hw', 'HW03: Vectors', 'problemSet', '2026-09-10T23:59:00', 100, 'inProgress'),
       a('p211-hw04', 'phys211', 'phys-hw', 'HW 04', 'problemSet', '2026-09-24T23:59:00', 100),
       a('p211-hw05', 'phys211', 'phys-hw', 'HW 05', 'problemSet', '2026-10-01T23:59:00', 100),
       a('p211-hw06', 'phys211', 'phys-hw', 'HW 06', 'problemSet', '2026-10-08T23:59:00', 100),
@@ -185,21 +187,28 @@ export function createSeedData(): AppState {
       a('p211-hw11', 'phys211', 'phys-hw', 'HW 11', 'problemSet', '2026-12-03T23:59:00', 100),
       a('p211-hw12', 'phys211', 'phys-hw', 'HW 12', 'problemSet', '2026-12-10T23:59:00', 100),
 
-      // ====== PHYS 211 — Pre-Class (Expert TA) ======
-      a('p211-pc01', 'phys211', 'phys-pc', 'PC 01', 'reading', '2026-08-30T23:59:00', 100),
-      a('p211-pc02', 'phys211', 'phys-pc', 'PC 02', 'reading', '2026-09-08T11:59:00', 100),
-      a('p211-pc03', 'phys211', 'phys-pc', 'PC 03', 'reading', '2026-09-13T23:59:00', 100),
-      a('p211-pc04', 'phys211', 'phys-pc', 'PC 04', 'reading', '2026-09-20T23:59:00', 100),
-      a('p211-pc05', 'phys211', 'phys-pc', 'PC 05', 'reading', '2026-09-27T23:59:00', 100),
-      a('p211-pc06', 'phys211', 'phys-pc', 'PC 06', 'reading', '2026-10-04T23:59:00', 100),
-      a('p211-pc07', 'phys211', 'phys-pc', 'PC 07', 'reading', '2026-10-11T23:59:00', 100),
-      a('p211-pc08', 'phys211', 'phys-pc', 'PC 08', 'reading', '2026-10-18T23:59:00', 100),
-      a('p211-pc09', 'phys211', 'phys-pc', 'PC 09', 'reading', '2026-10-25T23:59:00', 100),
-      a('p211-pc10', 'phys211', 'phys-pc', 'PC 10', 'reading', '2026-11-01T23:59:00', 100),
-      a('p211-pc11', 'phys211', 'phys-pc', 'PC 11', 'reading', '2026-11-08T23:59:00', 100),
-      a('p211-pc12', 'phys211', 'phys-pc', 'PC 12', 'reading', '2026-11-15T23:59:00', 100),
-      a('p211-pc13', 'phys211', 'phys-pc', 'PC 13', 'reading', '2026-11-29T23:59:00', 100),
-      a('p211-pc14', 'phys211', 'phys-pc', 'PC 14', 'reading', '2026-12-06T23:59:00', 100),
+      // ====== PHYS 211 — Expert TA: Pre-Class ======
+      a('p211-pc01', 'phys211', 'phys-pc', 'PreClass 01', 'reading', '2026-09-01T23:59:00', 100, 'done'),
+      a('p211-pc02', 'phys211', 'phys-pc', 'PreClass 02', 'reading', '2026-09-09T07:30:00', 100),
+      a('p211-pc03', 'phys211', 'phys-pc', 'PreClass 03', 'reading', '2026-09-13T23:59:00', 100),
+      a('p211-pc04', 'phys211', 'phys-pc', 'PreClass 04', 'reading', '2026-09-20T23:59:00', 100),
+      a('p211-pc05', 'phys211', 'phys-pc', 'PreClass 05', 'reading', '2026-09-27T23:59:00', 100),
+      a('p211-pc06', 'phys211', 'phys-pc', 'PreClass 06', 'reading', '2026-10-04T23:59:00', 100),
+      a('p211-pc07', 'phys211', 'phys-pc', 'PreClass 07', 'reading', '2026-10-11T23:59:00', 100),
+      a('p211-pc08', 'phys211', 'phys-pc', 'PreClass 08', 'reading', '2026-10-18T23:59:00', 100),
+      a('p211-pc09', 'phys211', 'phys-pc', 'PreClass 09', 'reading', '2026-10-25T23:59:00', 100),
+      a('p211-pc10', 'phys211', 'phys-pc', 'PreClass 10', 'reading', '2026-11-01T23:59:00', 100),
+      a('p211-pc11', 'phys211', 'phys-pc', 'PreClass 11', 'reading', '2026-11-08T23:59:00', 100),
+      a('p211-pc12', 'phys211', 'phys-pc', 'PreClass 12', 'reading', '2026-11-15T23:59:00', 100),
+      a('p211-pc13', 'phys211', 'phys-pc', 'PreClass 13', 'reading', '2026-11-29T23:59:00', 100),
+      a('p211-pc14', 'phys211', 'phys-pc', 'PreClass 14', 'reading', '2026-12-06T23:59:00', 100),
+
+      // ====== PHYS 211 — Expert TA: Practice / Review (ungraded) ======
+      a('p211-pmt1', 'phys211', 'phys-mt', 'Practice for Midterm 1', 'other', '2026-09-17T23:59:00', 0),
+      a('p211-pmt1-hw', 'phys211', 'phys-mt', 'HW Problems for Midterm 1 (Practice)', 'other', '2026-09-17T23:59:00', 0),
+      a('p211-pmt3', 'phys211', 'phys-mt', 'Practice for MT3', 'other', '2026-11-12T23:59:00', 0),
+      a('p211-pmt3-hw', 'phys211', 'phys-mt', '(Practice) HW Problems for MT3', 'other', '2026-11-14T23:59:00', 0),
+      a('p211-pfnl', 'phys211', 'phys-final', 'Practice for Final', 'other', '2026-12-18T23:59:00', 0),
 
       // ====== PHYS 211 — Exams ======
       a('p211-mt1', 'phys211', 'phys-mt', 'Midterm 1', 'exam', '2026-09-17T23:30:00', 150),
@@ -208,7 +217,7 @@ export function createSeedData(): AppState {
       a('p211-fn', 'phys211', 'phys-final', 'Final Exam', 'exam', '2026-12-17T23:59:00', 200),
 
       // ====== PHYS 211 — Quizzes ======
-      a('p211-preq', 'phys211', 'phys-quiz', 'Conceptual Pre-Quiz', 'quiz', '2026-08-28T16:45:00', 1),
+      a('p211-preq', 'phys211', 'phys-quiz', 'Conceptual Pre-Quiz', 'quiz', '2026-08-28T16:45:00', 1, 'done'),
       a('p211-postq', 'phys211', 'phys-quiz', 'Conceptual Post-Quiz', 'quiz', '2026-12-11T23:30:00', 1),
 
       // ====== PHYS 211 — Recitations (15 × 150 pts) ======
