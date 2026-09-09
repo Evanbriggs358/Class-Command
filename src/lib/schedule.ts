@@ -1,9 +1,10 @@
 import { Course, Settings } from '../types';
 import { CalendarEvent } from '../components/master/DailyAgenda';
 import { scoreAndSort, ScoredAssignment } from './scoring';
+import { classDayBounds } from './meetings';
 
-const WEEKDAY_START = 10;
-const WEEKDAY_END = 20;
+const WEEKDAY_START = 9;
+const WEEKDAY_END = 21;
 const WEEKEND_START = 11;
 const WEEKEND_END = 17;
 
@@ -28,12 +29,20 @@ export function isWeekend(d: Date): boolean {
   return day === 0 || day === 6;
 }
 
-export function getDayBounds(d: Date): { start: number; end: number } {
+export function getDayBounds(d: Date, courses?: Course[]): { start: number; end: number } {
   const weekend = isWeekend(d);
-  return {
-    start: (weekend ? WEEKEND_START : WEEKDAY_START) * 60,
-    end: (weekend ? WEEKEND_END : WEEKDAY_END) * 60,
-  };
+  let start = (weekend ? WEEKEND_START : WEEKDAY_START) * 60;
+  let end = (weekend ? WEEKEND_END : WEEKDAY_END) * 60;
+
+  if (courses) {
+    const cb = classDayBounds(courses, d);
+    if (cb) {
+      const pad = 30;
+      start = Math.min(start, Math.floor((cb.earliest - pad) / 60) * 60);
+      end = Math.max(end, Math.ceil((cb.latest + pad) / 60) * 60);
+    }
+  }
+  return { start, end };
 }
 
 export function fmtTime(mins: number): string {
@@ -70,8 +79,7 @@ export function buildDaySchedule(
   targetDate: Date,
 ): TimeBlock[] {
   const courseMap = new Map(courses.map((c) => [c.id, c]));
-  const weekend = isWeekend(targetDate);
-  const { start: dayStartMin, end: dayEndMin } = getDayBounds(targetDate);
+  const { start: dayStartMin, end: dayEndMin } = getDayBounds(targetDate, courses);
 
   const eventBlocks: TimeBlock[] = [];
   for (const ev of events) {
@@ -97,7 +105,7 @@ export function buildDaySchedule(
   if (LUNCH.start >= dayStartMin && LUNCH.start < dayEndMin && !overlapsEvent(LUNCH.start, LUNCH.end)) {
     mealBlocks.push({ kind: 'meal', startMin: Math.max(LUNCH.start, dayStartMin), endMin: Math.min(LUNCH.end, dayEndMin), title: LUNCH.label });
   }
-  if (!weekend && DINNER.start >= dayStartMin && DINNER.start < dayEndMin && !overlapsEvent(DINNER.start, DINNER.end)) {
+  if (!isWeekend(targetDate) && DINNER.start >= dayStartMin && DINNER.start < dayEndMin && !overlapsEvent(DINNER.start, DINNER.end)) {
     mealBlocks.push({ kind: 'meal', startMin: Math.max(DINNER.start, dayStartMin), endMin: Math.min(DINNER.end, dayEndMin), title: DINNER.label });
   }
 

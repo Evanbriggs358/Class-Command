@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Assignment, Course, Settings } from '../../types';
 import { CalendarEvent } from '../master/DailyAgenda';
 import { buildScheduleForDate, getDayBounds, fmtTime, TimeBlock } from '../../lib/schedule';
+import { meetingsForDate } from '../../lib/meetings';
 
 const HOUR_PX = 64;
 
@@ -24,17 +25,22 @@ export default function ScheduleTab({
   settings: Settings;
 }) {
   const now = new Date();
-  const { start: dayStartMin, end: dayEndMin } = getDayBounds(now);
+  const { start: dayStartMin, end: dayEndMin } = getDayBounds(now, courses);
   const dayStartH = dayStartMin / 60;
   const dayEndH = dayEndMin / 60;
 
+  const allEvents = useMemo(() => {
+    const classMeetings = meetingsForDate(courses, now);
+    return [...events, ...classMeetings];
+  }, [events, courses]);
+
   const schedule = useMemo(() => {
-    return buildScheduleForDate(now, events, assignments, courses, settings);
-  }, [events, assignments, courses, settings]);
+    return buildScheduleForDate(now, allEvents, assignments, courses, settings);
+  }, [allEvents, assignments, courses, settings]);
 
   const nowMin = now.getHours() * 60 + now.getMinutes();
   const label = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-  const allDayEvents = events.filter((ev) => ev.allDay);
+  const allDayEvents = allEvents.filter((ev) => ev.allDay);
 
   const hours: number[] = [];
   for (let h = dayStartH; h <= dayEndH; h++) hours.push(h);
