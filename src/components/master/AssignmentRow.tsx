@@ -73,31 +73,48 @@ export default function AssignmentRow({
         </div>
       </div>
 
-      {expanded && (
-        <div className="px-3 pb-3 space-y-2">
-          <WhyThisRank scored={scored} />
-          {a.pointsPossible != null && a.pointsPossible > 0 && onScoreChange && (
-            <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-800/50">
-              <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Score</label>
-              <input
-                type="number"
-                min={0}
-                max={a.pointsPossible}
-                step="any"
-                placeholder="--"
-                defaultValue={a.pointsEarned ?? ''}
-                onBlur={(e) => handleScoreInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
-                }}
+      {expanded && (() => {
+        const link = a.url || course.url;
+        return (
+          <div className="px-3 pb-3 space-y-2">
+            <WhyThisRank scored={scored} />
+            {link && (
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="w-16 rounded border border-gray-300 px-2 py-1 text-sm tabular-nums dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
-              />
-              <span className="text-xs text-gray-500 dark:text-gray-400">/ {a.pointsPossible}</span>
-            </div>
-          )}
-        </div>
-      )}
+                className="flex items-center gap-1.5 rounded-lg bg-indigo-50 px-3 py-2 text-xs font-medium text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/30 dark:text-indigo-300 dark:hover:bg-indigo-900/40"
+              >
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+                Open in {a.url ? 'assignment page' : course.code + ' homepage'}
+              </a>
+            )}
+            {a.pointsPossible != null && a.pointsPossible > 0 && onScoreChange && (
+              <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-800/50">
+                <label className="text-xs font-medium text-gray-600 dark:text-gray-400">Score</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={a.pointsPossible}
+                  step="any"
+                  placeholder="--"
+                  defaultValue={a.pointsEarned ?? ''}
+                  onBlur={(e) => handleScoreInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-16 rounded border border-gray-300 px-2 py-1 text-sm tabular-nums dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+                />
+                <span className="text-xs text-gray-500 dark:text-gray-400">/ {a.pointsPossible}</span>
+              </div>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }

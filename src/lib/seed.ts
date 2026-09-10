@@ -34,6 +34,7 @@ export function createSeedData(): AppState {
         color: '#f59e0b',
         effortMultiplier: 0.8,
         meetingTimes: 'TR 9:05–10:20',
+        url: 'https://psu.instructure.com',
         categories: [
           { id: 'arch-exam', name: 'Exams', weightPct: 30, expectedCount: 3 },
           { id: 'arch-quiz', name: 'Quizzes', weightPct: 30, expectedCount: 7 },
@@ -49,6 +50,7 @@ export function createSeedData(): AppState {
         color: '#10b981',
         effortMultiplier: 1.2,
         meetingTimes: 'MWF 15:35–16:25, R rec 13:35–14:50',
+        url: 'https://psu.instructure.com',
         categories: [
           { id: 'chem-mt', name: 'Midterm Exams', weightPct: 40.5, expectedCount: 3 },
           { id: 'chem-case', name: 'Case Study', weightPct: 13.5, expectedCount: 1 },
@@ -67,6 +69,7 @@ export function createSeedData(): AppState {
         color: '#f97316',
         effortMultiplier: 0.7,
         meetingTimes: 'MWF 10:10–11:00',
+        url: 'https://psu.instructure.com',
         categories: [
           { id: 'fdsc-exam', name: 'Exams', weightPct: 45, expectedCount: 4, dropLowest: 1 },
           { id: 'fdsc-hw', name: 'Homework', weightPct: 25, expectedCount: 9 },
@@ -80,6 +83,7 @@ export function createSeedData(): AppState {
         color: '#8b5cf6',
         effortMultiplier: 0.8,
         meetingTimes: 'T 12:05–13:20 + online',
+        url: 'https://psu.instructure.com',
         categories: [
           { id: 'ldt-disc', name: 'Online Discussions', weightPct: 22.5, expectedCount: 14 },
           { id: 'ldt-part', name: 'In-person Participation', weightPct: 19.5, expectedCount: 15, dropLowest: 2 },
@@ -93,6 +97,7 @@ export function createSeedData(): AppState {
         color: '#3b82f6',
         effortMultiplier: 1.3,
         meetingTimes: 'MW 11:15–12:05, M lab 18:50–20:45, W rec 19:55–20:45',
+        url: 'https://www.theexpertta.com',
         categories: [
           { id: 'phys-mt', name: 'Midterm Exams', weightPct: 45, expectedCount: 3 },
           { id: 'phys-final', name: 'Final Exam', weightPct: 20, expectedCount: 1 },

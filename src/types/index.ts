@@ -22,6 +22,7 @@ export interface Course {
   categories: GradeCategory[];
   effortMultiplier: number;
   meetingTimes?: string;
+  url?: string;
   archived?: boolean;
 }
 
@@ -40,6 +41,7 @@ export interface Assignment {
   dismissed?: boolean;
   removedFromCanvas?: boolean;
   notes?: string;
+  url?: string;
   source: 'ics' | 'manual' | 'import';
   sourceUid?: string;
 }
