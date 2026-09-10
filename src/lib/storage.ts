@@ -27,10 +27,25 @@ function emptyState(): AppState {
   };
 }
 
+const COURSE_URLS: Record<string, string> = {
+  arch100: 'https://psu.instructure.com',
+  chem110: 'https://psu.instructure.com',
+  fdsc105: 'https://psu.instructure.com',
+  ldt110n: 'https://psu.instructure.com',
+  phys211: 'https://www.theexpertta.com',
+};
+
 function migrate(state: AppState): AppState {
-  // Migration scaffold — currently only version 1 exists
   if (!state.schemaVersion || state.schemaVersion < 1) {
     state.schemaVersion = 1;
+  }
+  if (state.schemaVersion < 2) {
+    for (const c of state.courses) {
+      if (!c.url && COURSE_URLS[c.id]) {
+        c.url = COURSE_URLS[c.id];
+      }
+    }
+    state.schemaVersion = 2;
   }
   return state;
 }

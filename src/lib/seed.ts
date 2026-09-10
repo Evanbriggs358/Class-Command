@@ -25,7 +25,7 @@ function a(
 
 export function createSeedData(): AppState {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     courses: [
       {
         id: 'arch100',
