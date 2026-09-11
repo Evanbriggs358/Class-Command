@@ -28,11 +28,11 @@ function emptyState(): AppState {
 }
 
 const COURSE_URLS: Record<string, string> = {
-  arch100: 'https://psu.instructure.com',
-  chem110: 'https://psu.instructure.com',
-  fdsc105: 'https://psu.instructure.com',
-  ldt110n: 'https://psu.instructure.com',
-  phys211: 'https://www.theexpertta.com',
+  arch100: 'https://psu.instructure.com/courses/2484336',
+  chem110: 'https://psu.instructure.com/courses/2474646',
+  fdsc105: 'https://psu.instructure.com/courses/2469521',
+  ldt110n: 'https://psu.instructure.com/courses/2466835',
+  phys211: 'https://psu.instructure.com/courses/2474592',
 };
 
 function migrate(state: AppState): AppState {

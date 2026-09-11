@@ -1,5 +1,65 @@
 import { AppState, Assignment, AssignmentType, Status } from '../types';
 
+const CANVAS = 'https://psu.instructure.com';
+
+const CANVAS_COURSE: Record<string, number> = {
+  arch100: 2484336,
+  chem110: 2474646,
+  fdsc105: 2469521,
+  ldt110n: 2466835,
+  phys211: 2474592,
+};
+
+const CANVAS_ASSIGN: Record<string, number> = {
+  'a100-q1': 18413542, 'a100-q2': 18413544, 'a100-q3': 18413535,
+  'a100-q4': 18413543, 'a100-q5': 18413540, 'a100-q6': 18413534,
+  'a100-fq': 18413541,
+  'a100-r1': 18413546, 'a100-r2': 18413536, 'a100-r3': 18413538,
+  'a100-e1': 18413547, 'a100-e2': 18413545, 'a100-e3': 18413537,
+  'c110-e1': 18454940, 'c110-e2': 18454941, 'c110-e3': 18454942,
+  'c110-fn': 18454944, 'c110-cs': 18454945,
+  'f105-hw01': 18533401, 'f105-hw02': 18535914, 'f105-hw03': 18533396,
+  'f105-hw04': 18533402, 'f105-hw05': 18533398, 'f105-hw06': 18533382,
+  'f105-hw07': 18533395, 'f105-hw08': 18535944, 'f105-hw09': 18533397,
+  'f105-e1': 18533368, 'f105-e2': 18533391, 'f105-e3': 18533375,
+  'f105-e4': 18533365,
+  'l110-d01': 18616038, 'l110-d02': 18616039, 'l110-d03': 18616040,
+  'l110-d04': 18616031, 'l110-d05': 18616026, 'l110-d06': 18616027,
+  'l110-d07': 18616053, 'l110-d08': 18616028, 'l110-d09': 18616025,
+  'l110-d10': 18616033, 'l110-d11': 18616024, 'l110-d12': 18616034,
+  'l110-d13': 18616035, 'l110-d14': 18616036,
+  'l110-a1': 18616062, 'l110-a2': 18616071, 'l110-a3a': 18616055,
+  'l110-a3b': 18616073, 'l110-a4a': 18616074, 'l110-a4b': 18616075,
+  'p211-hw01': 18492467, 'p211-hw02': 18492468, 'p211-hw03': 18492469,
+  'p211-hw04': 18492470, 'p211-hw05': 18492471, 'p211-hw06': 18492472,
+  'p211-hw07': 18492473, 'p211-hw08': 18492474, 'p211-hw09': 18492475,
+  'p211-hw10': 18492476, 'p211-hw11': 18492477, 'p211-hw12': 18492479,
+  'p211-pc01': 18492492, 'p211-pc02': 18492493, 'p211-pc03': 18492494,
+  'p211-pc04': 18492495, 'p211-pc05': 18492496, 'p211-pc06': 18492497,
+  'p211-pc07': 18492498, 'p211-pc08': 18492499, 'p211-pc09': 18492500,
+  'p211-pc10': 18492501, 'p211-pc11': 18492502, 'p211-pc12': 18492503,
+  'p211-pc13': 18492504, 'p211-pc14': 18492505,
+  'p211-r01': 18492507, 'p211-r02': 18492508, 'p211-r03': 18492509,
+  'p211-r04': 18492510, 'p211-r05': 18492511, 'p211-r06': 18492512,
+  'p211-r07': 18492513, 'p211-r08': 18492514, 'p211-r09': 18492515,
+  'p211-r10': 18492517, 'p211-r11': 18492518, 'p211-r12': 18492519,
+  'p211-r13': 18492521, 'p211-r14': 18492522, 'p211-r15': 18492523,
+  'p211-lab01': 18492480, 'p211-lab02': 18492481, 'p211-lab03': 18492482,
+  'p211-lab04': 18492483, 'p211-lab05': 18492484, 'p211-lab06': 18492485,
+  'p211-lab07': 18492486, 'p211-lab08': 18492487, 'p211-lab09': 18492488,
+  'p211-mt1': 18492489, 'p211-mt2': 18492490, 'p211-mt3': 18492491,
+  'p211-fn': 18492466,
+  'p211-preq': 18492457, 'p211-postq': 18492464,
+  'p211-start': 18492467,
+};
+
+function assignUrl(id: string, courseId: string): string | undefined {
+  const aId = CANVAS_ASSIGN[id];
+  const cId = CANVAS_COURSE[courseId];
+  if (aId && cId) return `${CANVAS}/courses/${cId}/assignments/${aId}`;
+  return undefined;
+}
+
 function a(
   id: string,
   courseId: string,
@@ -10,6 +70,7 @@ function a(
   pointsPossible?: number,
   status: Status = 'notStarted',
 ): Assignment {
+  const url = assignUrl(id, courseId);
   return {
     id,
     courseId,
@@ -20,6 +81,7 @@ function a(
     status,
     source: 'manual',
     ...(pointsPossible != null ? { pointsPossible } : {}),
+    ...(url ? { url } : {}),
   };
 }
 
@@ -34,7 +96,7 @@ export function createSeedData(): AppState {
         color: '#f59e0b',
         effortMultiplier: 0.8,
         meetingTimes: 'TR 9:05–10:20',
-        url: 'https://psu.instructure.com',
+        url: 'https://psu.instructure.com/courses/2484336',
         categories: [
           { id: 'arch-exam', name: 'Exams', weightPct: 30, expectedCount: 3 },
           { id: 'arch-quiz', name: 'Quizzes', weightPct: 30, expectedCount: 7 },
@@ -50,7 +112,7 @@ export function createSeedData(): AppState {
         color: '#10b981',
         effortMultiplier: 1.2,
         meetingTimes: 'MWF 15:35–16:25, R rec 13:35–14:50',
-        url: 'https://psu.instructure.com',
+        url: 'https://psu.instructure.com/courses/2474646',
         categories: [
           { id: 'chem-mt', name: 'Midterm Exams', weightPct: 40.5, expectedCount: 3 },
           { id: 'chem-case', name: 'Case Study', weightPct: 13.5, expectedCount: 1 },
@@ -69,7 +131,7 @@ export function createSeedData(): AppState {
         color: '#f97316',
         effortMultiplier: 0.7,
         meetingTimes: 'MWF 10:10–11:00',
-        url: 'https://psu.instructure.com',
+        url: 'https://psu.instructure.com/courses/2469521',
         categories: [
           { id: 'fdsc-exam', name: 'Exams', weightPct: 45, expectedCount: 4, dropLowest: 1 },
           { id: 'fdsc-hw', name: 'Homework', weightPct: 25, expectedCount: 9 },
@@ -83,7 +145,7 @@ export function createSeedData(): AppState {
         color: '#8b5cf6',
         effortMultiplier: 0.8,
         meetingTimes: 'T 12:05–13:20 + online',
-        url: 'https://psu.instructure.com',
+        url: 'https://psu.instructure.com/courses/2466835',
         categories: [
           { id: 'ldt-disc', name: 'Online Discussions', weightPct: 22.5, expectedCount: 14 },
           { id: 'ldt-part', name: 'In-person Participation', weightPct: 19.5, expectedCount: 15, dropLowest: 2 },
@@ -97,7 +159,7 @@ export function createSeedData(): AppState {
         color: '#3b82f6',
         effortMultiplier: 1.3,
         meetingTimes: 'MW 11:15–12:05, M lab 18:50–20:45, W rec 19:55–20:45',
-        url: 'https://www.theexpertta.com',
+        url: 'https://psu.instructure.com/courses/2474592',
         categories: [
           { id: 'phys-mt', name: 'Midterm Exams', weightPct: 45, expectedCount: 3 },
           { id: 'phys-final', name: 'Final Exam', weightPct: 20, expectedCount: 1 },
