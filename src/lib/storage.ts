@@ -1,4 +1,5 @@
 import { AppState, Settings, AssignmentType } from '../types';
+import { canvasAssignmentUrl } from './seed';
 
 const STORAGE_KEY = 'classCommand.state.v1';
 const BACKUP_PREFIX = 'classCommand.backup.';
@@ -46,6 +47,18 @@ function migrate(state: AppState): AppState {
       }
     }
     state.schemaVersion = 2;
+  }
+  if (state.schemaVersion < 3) {
+    for (const c of state.courses) {
+      if (COURSE_URLS[c.id]) c.url = COURSE_URLS[c.id];
+    }
+    for (const a of state.assignments) {
+      if (!a.url) {
+        const url = canvasAssignmentUrl(a.id, a.courseId);
+        if (url) a.url = url;
+      }
+    }
+    state.schemaVersion = 3;
   }
   return state;
 }

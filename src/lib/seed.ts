@@ -53,7 +53,7 @@ const CANVAS_ASSIGN: Record<string, number> = {
   'p211-start': 18492467,
 };
 
-function assignUrl(id: string, courseId: string): string | undefined {
+export function canvasAssignmentUrl(id: string, courseId: string): string | undefined {
   const aId = CANVAS_ASSIGN[id];
   const cId = CANVAS_COURSE[courseId];
   if (aId && cId) return `${CANVAS}/courses/${cId}/assignments/${aId}`;
@@ -70,7 +70,7 @@ function a(
   pointsPossible?: number,
   status: Status = 'notStarted',
 ): Assignment {
-  const url = assignUrl(id, courseId);
+  const url = canvasAssignmentUrl(id, courseId);
   return {
     id,
     courseId,
@@ -87,7 +87,7 @@ function a(
 
 export function createSeedData(): AppState {
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     courses: [
       {
         id: 'arch100',
