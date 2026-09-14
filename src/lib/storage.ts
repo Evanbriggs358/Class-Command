@@ -1,5 +1,5 @@
 import { AppState, Settings, AssignmentType } from '../types';
-import { canvasAssignmentUrl } from './seed';
+import { canvasAssignmentUrl, chemPlaAssignments } from './seed';
 
 const STORAGE_KEY = 'classCommand.state.v1';
 const BACKUP_PREFIX = 'classCommand.backup.';
@@ -59,6 +59,13 @@ function migrate(state: AppState): AppState {
       }
     }
     state.schemaVersion = 3;
+  }
+  if (state.schemaVersion < 4) {
+    const existing = new Set(state.assignments.map((a) => a.id));
+    for (const pla of chemPlaAssignments()) {
+      if (!existing.has(pla.id)) state.assignments.push(pla);
+    }
+    state.schemaVersion = 4;
   }
   return state;
 }

@@ -85,9 +85,34 @@ function a(
   };
 }
 
+const CHEM_PLA_DATES: [number, string, boolean][] = [
+  [2,'2026-08-26',true],[3,'2026-08-28',true],[4,'2026-08-31',true],
+  [5,'2026-09-02',true],[6,'2026-09-04',true],[7,'2026-09-09',true],[8,'2026-09-11',true],
+  [9,'2026-09-14',false],[10,'2026-09-16',false],[11,'2026-09-18',false],
+  [12,'2026-09-21',false],[13,'2026-09-23',false],[14,'2026-09-25',false],
+  [15,'2026-09-28',false],[16,'2026-09-30',false],[17,'2026-10-02',false],
+  [18,'2026-10-05',false],[19,'2026-10-07',false],[20,'2026-10-09',false],[21,'2026-10-11',false],
+  [22,'2026-10-14',false],[23,'2026-10-16',false],[24,'2026-10-19',false],
+  [25,'2026-10-21',false],[26,'2026-10-23',false],[27,'2026-10-26',false],
+  [28,'2026-10-28',false],[29,'2026-10-30',false],[30,'2026-11-02',false],
+  [31,'2026-11-04',false],[32,'2026-11-06',false],[33,'2026-11-09',false],
+  [34,'2026-11-11',false],[35,'2026-11-13',false],[36,'2026-11-16',false],
+  [37,'2026-11-18',false],[38,'2026-11-20',false],[39,'2026-11-30',false],
+  [40,'2026-12-02',false],[41,'2026-12-04',false],[42,'2026-12-07',false],
+  [43,'2026-12-09',false],[44,'2026-12-11',false],
+];
+
+export function chemPlaAssignments(): Assignment[] {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return CHEM_PLA_DATES.map(([num, date, done]) =>
+    a(`c110-pla${pad(num)}`, 'chem110', 'chem-pla', `PLA ${num}`, 'reading',
+      `${date}T09:05:00`, 3, done ? 'done' : 'notStarted'),
+  );
+}
+
 export function createSeedData(): AppState {
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     courses: [
       {
         id: 'arch100',
@@ -197,6 +222,9 @@ export function createSeedData(): AppState {
       a('c110-e3', 'chem110', 'chem-mt', 'Exam 3', 'exam', '2026-11-10T21:30:00', 100),
       a('c110-cs', 'chem110', 'chem-case', 'GLP-1 Case Study', 'project', '2026-12-04T18:00:00', 100),
       a('c110-fn', 'chem110', 'chem-final', 'Final Exam', 'exam', '2026-12-17T23:59:00', 100),
+
+      // ====== CHEM 110 — Pre-Lecture Assignments (3 pts each, due before lecture) ======
+      ...chemPlaAssignments(),
 
       // ====== FDSC 105 — Homework (5 pts each, best 5 of 9 count) ======
       a('f105-hw01', 'fdsc105', 'fdsc-hw', 'Making Cheese', 'project', '2026-09-04T23:59:00', 5),
